@@ -1,3 +1,9 @@
+/* 
+ * Copyright (C) 2015 Frantisek Mensik
+ * findfile.c is part of the 4nix.org project.
+ *
+ * This file is licensed under the GNU Lesser General Public License.
+ */
 
 #ifdef HAVE_CONFIG_H
 # include "config.h"
@@ -15,10 +21,10 @@
 #include "windows.h"
 
 
-// depend on functions
-void _setlasterror( unsigned err ) { errno = err; }
-unsigned get_win_error( int err ) { return err; }
-unsigned _getfileattributes( const char *name ) { return 0; }
+// depends on these functions
+extern void _setlasterror( unsigned err );
+extern unsigned get_win_error( int err );
+extern unsigned _getfileattributes( const char *name );
 
 
 unsigned _getfullpathname( const char *name, unsigned len, char *buffer, char **lastpart )
