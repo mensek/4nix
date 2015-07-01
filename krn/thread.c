@@ -45,12 +45,12 @@ extern unsigned get_win_error( int err );
 
 #define THREADOBJID		4
 
-bool _closethreadhandle( uintptr_t hndl );
-/*bool _duplicatethreadhandle( uintptr_t srchndl, uintptr_t *targethndl,
-                               unsigned access, bool inherit, unsigned options );
-bool _gethandleinformation( uintptr_t hndl, unsigned *flags );
-bool _sethandleinformation( uintptr_t hndl, unsigned mask, unsigned flags );*/
-unsigned _waitforsinglethreadobject( uintptr_t hndl, unsigned milliseconds );
+static bool _closethreadhandle( uintptr_t hndl );
+/*static bool _duplicatethreadhandle( uintptr_t srchndl, uintptr_t *targethndl,
+                                    unsigned access, bool inherit, unsigned options );
+static bool _gethandleinformation( uintptr_t hndl, unsigned *flags );
+static bool _sethandleinformation( uintptr_t hndl, unsigned mask, unsigned flags );*/
+static unsigned _waitforsinglethreadobject( uintptr_t hndl, unsigned milliseconds );
 
 static TYPEOBJITEM threadkrnlobj =
 {
@@ -413,6 +413,7 @@ bool _getexitcodethread( uintptr_t hndl, unsigned *exitcode )
 	return true;
 }
 
+static
 unsigned _waitforsinglethreadobject( uintptr_t hndl, unsigned milliseconds )
 {
 	// TODO: implement retval
@@ -480,6 +481,7 @@ unsigned _waitforsinglethreadobject( uintptr_t hndl, unsigned milliseconds )
 	return WAIT_OBJECT_0;
 }
 
+static
 bool _closethreadhandle( uintptr_t hndl )
 {
 	//TODO: implement the CloseHandle function

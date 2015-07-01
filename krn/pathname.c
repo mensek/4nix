@@ -1,6 +1,6 @@
 /* 
  * Copyright (C) 2015 Frantisek Mensik
- * findfile.c is part of the 4nix.org project.
+ * pathname.c is part of the 4nix.org project.
  *
  * This file is licensed under the GNU Lesser General Public License.
  */
