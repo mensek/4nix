@@ -36,7 +36,7 @@ extern unsigned get_win_error( int err );
 extern uintptr_t _getcurrentprocess( );
 
 
-//NOTE: global variable initialized after the program start
+//NOTE: a global variable initialized when starting
 static const char *_pgmptr = NULL;
 
 static const char* get_progpath ()
