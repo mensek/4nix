@@ -23,7 +23,11 @@ extern void _setlasterror( unsigned err );
 extern unsigned get_win_error( int err );
 
 
-bool _initializecriticalsectionex( CRITICAL_SECTION *crit, DWORD spincount, DWORD flags )
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+bool _initializecriticalsectionex( CRITICAL_SECTION *crit, unsigned spincount, unsigned flags )
 {
 	//TODO: implement the spin count on multi-processor systems
 
@@ -74,10 +78,10 @@ bool _tryentercriticalsection( CRITICAL_SECTION *crit )
     rc = pthread_mutex_trylock (crit);
     if ( rc != 0 ) {
         _setlasterror( get_win_error (rc) );
-        return FALSE;
+        return false;
     }
     
-    return TRUE;
+    return true;
 }
 
 void _leavecriticalsection( CRITICAL_SECTION *crit )
@@ -97,3 +101,7 @@ void _uninitializecriticalsection( CRITICAL_SECTION *crit )
     if ( rc != 0)
         _setlasterror( get_win_error (rc) );
 }
+
+#ifdef __cplusplus
+}
+#endif
