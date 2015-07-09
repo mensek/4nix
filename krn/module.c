@@ -14,6 +14,7 @@
 #endif
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 #include <dlfcn.h>
 #if defined(__linux__) || defined(__bsd__)
 # include <link.h>
@@ -35,6 +36,10 @@ extern void _setlasterror( unsigned err );
 extern unsigned get_win_error( int err );
 extern uintptr_t _getcurrentprocess( );
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 //NOTE: a global variable initialized when starting
 static const char *_pgmptr = NULL;
@@ -139,7 +144,7 @@ unsigned _getmodulefilenameex( uintptr_t hProcess, uintptr_t hModule, char* file
 {
 	unsigned cnt;
 
-	if ( (HANDLE)hProcess == _getcurrentprocess( ) )		//todo: check this
+	if ( hProcess == _getcurrentprocess( ) )		//todo: check this
 		cnt = _getmodulefilename( hModule, filename, size );
 	else
 	{
@@ -266,7 +271,11 @@ FARPROC _getprocaddress( uintptr_t hModule, const char* function )
 	fnc = dlsym (lib, function);
 	if ( !fnc ) {
 		_setlasterror( ERROR_CALL_NOT_IMPLEMENTED );
-		return NULL;
+		return (FARPROC)NULL;
 	}
 	return (FARPROC)fnc;
 }
+
+#ifdef __cplusplus
+}
+#endif

@@ -27,6 +27,10 @@ extern unsigned get_win_error( int err );
 extern unsigned _getfileattributes( const char *name );
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 unsigned _getfullpathname( const char *name, unsigned len, char *buffer, char **lastpart )
 {
 	//TODO: original function works also when the file does not exist
@@ -100,16 +104,16 @@ bool _checknamelegaldos8dot3( const char* lpName, char *lpOemName, unsigned dwOe
 	register char *lptr;
 	int c, n, lastdot = 0;
 	bool legal = true, hasspace = false;
-	BOOL isdir;
+	bool isdir;
 
 	if (!lpName) {
 		if (pbNameContainsSpaces) *pbNameContainsSpaces = false;
 		if (pbNameLegal) *pbNameLegal = false;
 		_setlasterror( ERROR_INVALID_PARAMETER );
-		return FALSE;
+		return false;
 	}
 
-	isdir = (GetFileAttributesA( lpName ) & FILE_ATTRIBUTE_DIRECTORY);
+	isdir = (_getfileattributes( lpName ) & FILE_ATTRIBUTE_DIRECTORY);
 	c = 0;
 	lptr = strrchr (lpName, '/');
 	if (!lptr) lptr = (char*)lpName;
@@ -166,3 +170,7 @@ bool _checknamelegaldos8dot3( const char* lpName, char *lpOemName, unsigned dwOe
 	if (pbNameLegal) *pbNameLegal = (legal == true);
 	return (legal == true);
 }
+
+#ifdef __cplusplus
+}
+#endif

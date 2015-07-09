@@ -22,6 +22,10 @@ extern void _setlasterror( unsigned err );
 extern unsigned get_win_error( int err );
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 unsigned _sleepex( unsigned timeout, bool alertable )
 {
 	int rc;
@@ -54,3 +58,7 @@ unsigned _sleepex( unsigned timeout, bool alertable )
 
 	return 0;
 }
+
+#ifdef __cplusplus
+}
+#endif

@@ -26,6 +26,10 @@ extern void _setlasterror( unsigned err );
 extern unsigned get_win_error( int err );
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 bool _createdirectoryex( const char *template, const char* path, LPSECURITY_ATTRIBUTES sa )
 {
 	int rc;
@@ -44,7 +48,7 @@ bool _createdirectoryex( const char *template, const char* path, LPSECURITY_ATTR
 
 	rc = mkdir (path, mode);
 	if (rc == -1) {
-		DWORD dwErr;
+		unsigned dwErr;
 		switch (errno) {
 		case ENOENT: dwErr = ERROR_INVALID_NAME; break;
 		default: dwErr = get_win_error (errno); break; }
@@ -65,7 +69,7 @@ bool _removedirectory( const char* path )
 	else
 		rc = rmdir (path);
 	if (rc == -1) {
-		DWORD dwErr;
+		unsigned dwErr;
 		switch (errno) {
 		case ENOENT: dwErr = ERROR_INVALID_NAME; break;
 		case EFAULT: dwErr = ERROR_PATH_NOT_FOUND; break;
@@ -87,7 +91,8 @@ unsigned _getcurrentdirectory( unsigned buflen, char* buf )
 		if (errno == ERANGE ||
 		    (errno == EINVAL && buflen == 0))
 		{
-			#define PATH_BUFLEN	MAX_PATH * 32 * 4	//TODO: update the value
+			//#define PATH_BUFLEN	MAX_PATH * 32 * 4	//TODO: update the value
+			const size_t PATH_BUFLEN = pathconf (".", _PC_PATH_MAX);
 			cwd = (char*) malloc (PATH_BUFLEN);
 			if (cwd) {
 				char *pcwd;
@@ -121,7 +126,7 @@ bool _setcurrentdirectory( const char* dir )
 
 	rc = chdir (dir);
 	if (rc == -1) {
-		DWORD dwErr;
+		unsigned dwErr;
 		switch (errno) {
 		case ENOENT: dwErr = ERROR_INVALID_NAME; break;
 		default: dwErr = get_win_error (errno); break; }
@@ -131,3 +136,7 @@ bool _setcurrentdirectory( const char* dir )
 
 	return true;
 }
+
+#ifdef __cplusplus
+}
+#endif
